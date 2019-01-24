@@ -5,8 +5,7 @@ from tqdm import tqdm
 from ctrip_funcs import Crawl
 from db import Mysql_db
 from tool import runTask, preprocess, get_eleven, MyThread
-import time
-
+from config import *
 def main(id,lock,q,hotel_id):
     crawl=Crawl()
     eleven=get_eleven(id)
@@ -18,7 +17,7 @@ def main(id,lock,q,hotel_id):
         result = preprocess(detailinfo) #对得到的数据进行预处理
         for i in result:
             db.insert_one(i)
-       # db.repair(id[0],str(crawl_time),str(start_date))
+        db.repair(id[0],str(crawl_time),str(start_date))
     lock.acquire()
     q.put(q.get()+1)
     now = q.get()
@@ -49,4 +48,4 @@ def init():
     
 if __name__ == '__main__':
     db = Mysql_db()
-    runTask(init,hour=1)
+    runTask(init,hour=hour,min=min,second=second)

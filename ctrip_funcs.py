@@ -1,5 +1,5 @@
 from lxml import etree
-from tool import openlink,get_eleven
+from tool import openlink
 import datetime
 class Crawl():
     def parse(self, html, hotel_id, hotel_name, start_date, dep_date):
@@ -39,6 +39,7 @@ class Crawl():
                                     detail_info.setdefault('room_last', r.xpath('string(.//div[@class="hotel_room_last"])'))
                                 elif r.xpath('string(.//div[@class="btns_base22_main"])') == '订完':
                                     detail_info.setdefault('room_last', '无房')
+                                    detail_info['price']='0'
                                 else:
                                     detail_info.setdefault('room_last', '')
                                 detail.append(detail_info)

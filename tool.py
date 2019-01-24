@@ -60,9 +60,10 @@ def preprocess(data_list):
     try:
         if not data.empty:
             for i in data.groupby(
-                    ['brid', 'start_time', 'breakfast_type', 'bed_type']).groups.values():
+                    ['room_id', 'start_time', 'breakfast_type', 'bed_type','crawl_time','hotel_name']).groups.values():
                 if '在线付' not in data.iloc[i]['pay_type']:
-                    result.append(data.iloc[i].iloc[0])
+                    sorted_data=data.iloc[i].sort_values(by='price')
+                    result.append(sorted_data.iloc[0])
     except Exception as e:
         exit(1)
     finally:
@@ -159,7 +160,7 @@ def openlink(url, type=None, headers=None, data=None, params=None):
                 time.sleep(15)
                 exit(1)
             if '验证访问' in response.text:
-                continue
+                raise Exception
             if response.status_code == 200:
                 if type == 0:
                     return response.json()

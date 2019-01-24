@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  spider:
+        build: .
+        container_name: "ctrip_spider"
+        image: "ctrip_spider"
+        command: python web.py
+        volumes:
+          - .:/code
+        ports:
+          - 5000:5000
+        links:
+          - mysql:mysql
+  mysql:
+    image: "mysql:5.7"
+    container_name: "ctrip_mysql"
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+#端口没映射
+
+
+
